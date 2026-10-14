@@ -1,6 +1,6 @@
 # Requirements and Test Coverage: `inventory.js`
 
-The table maps each requirement to its test case and Jest test name. All results below are from the reported `npx jest inventory --coverage` run.
+The table maps each requirement to its test case and Jest test name. Results are from the latest `npx jest inventory --coverage` run.
 
 | Requirement | Type | Test case | Test name in code | Result |
 |---|---|---|---|---|
@@ -13,6 +13,6 @@ The table maps each requirement to its test case and Jest test name. All results
 | REQ-07 | Security | TC-07 | `REQ-07 restock rejects unsafe sku (%s: %s)`; `REQ-07 pick rejects unsafe sku (%s: %s)`; `REQ-07 restock accepts valid sku (%s: %s)` | PASS |
 | REQ-08 | Reliability | TC-08 | `REQ-08 failed restock leaves original stock unchanged after a prior valid delivery`; `REQ-08 failed pick leaves original stock unchanged` | PASS |
 
-All eight requirements are covered. The review-fix run passed 37 of 37 tests. Coverage for `inventory.js` was 100% for statements, branches, functions, and lines, with no uncovered lines.
+All eight requirements are covered. The latest run passed all 37 tests. `inventory.js` had 100% statement, branch, function, and line coverage, with no uncovered lines.
 
 

@@ -13,6 +13,6 @@ Run these cases from the repository root with `npx jest inventory`. Each row poi
 | TC-07 | REQ-07 | Security / High | Stock is empty. | Try injection-like strings, a 21-character SKU, whitespace, a number, an empty string, and an underscore through `restock` and `pick`. Also try valid 1- and 20-character SKUs through `restock`. | Invalid values throw `invalid sku` in both operations; valid boundary values are accepted by `restock`. | `REQ-07 restock rejects unsafe sku (%s: %s)`; `REQ-07 pick rejects unsafe sku (%s: %s)`; `REQ-07 restock accepts valid sku (%s: %s)` |
 | TC-08 | REQ-08 | Reliability / High | Stock contains `A-1: 5`. | Restock once with a valid delivery followed by a zero-quantity delivery; also try picking more than is available. | Invalid restock throws `qty must be a positive whole number`; invalid pick throws `not enough stock`; the original stock remains unchanged. | `REQ-08 failed restock leaves original stock unchanged after a prior valid delivery`; `REQ-08 failed pick leaves original stock unchanged` |
 
-The review-fix run results for TC-06 are recorded in `docs/test-report.md`.
+The latest TC-06 measurement is recorded in `docs/test-report.md`.
 
 

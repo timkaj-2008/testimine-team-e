@@ -7,9 +7,9 @@ Command: `npx jest inventory --coverage --runInBand --verbose`
 Environment: Node.js v24.19.0, Jest 29.7.0
 Result: 37/37 tests passed. Statement, branch, function, and line coverage are all 100%; there are no uncovered lines. The REQ-06 Jest case processed 20 000 items in 5 ms, below the 100 ms limit.
 
-For a before/after comparison, I ran the original nested-loop implementation from `main` and the current `Set` implementation against the same 20 000-item fixture (`SKU-${i % 19000}`) in this environment. The original implementation took 674.4 ms; the `Set` implementation took 2.71 ms. These are single-run measurements and can vary by machine.
+For comparison, I measured the original nested-loop implementation from `main` and the current `Set` implementation with the same 20 000-item fixture (`SKU-${i % 19000}`). The original took 674.4 ms; the `Set` version took 2.71 ms. These are single-run results and may vary by machine.
 
-## Defects and changes
+## Findings and changes
 
 | ID | Finding | Severity | Found by | Resolution |
 |---|---|---|---|---|
@@ -27,8 +27,8 @@ For a before/after comparison, I ran the original nested-loop implementation fro
 
 ## Review status
 
-The code and documentation findings from the review have been addressed in this branch. The PR description still needs to be entered on GitHub with the command, test count, coverage, and timing above. Confirm that all review threads are resolved after pushing the fixes.
+The code and documentation findings have been addressed in commit `21b7fe9`. The PR description and replies to the review threads still need to be added on GitHub.
 
 ## Recommendation
 
-The inventory suite passes with full coverage, and REQ-06 is below its 100 ms limit. Once the fixes are pushed and the PR description and review threads are updated, the PR is ready for final review.
+The inventory suite passes with full coverage, and REQ-06 is below its 100 ms limit. The PR is ready for another review once its description and review replies are updated on GitHub.

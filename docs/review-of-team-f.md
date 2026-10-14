@@ -4,7 +4,7 @@ Reviewed PR: [Test suite and documents for inventory.js – Team F](https://gith
 Repository: [ttvXdlex/Testimine](https://github.com/ttvXdlex/Testimine)  
 Review date: 2026-10-08
 
-I checked the files in the pull request against checklist 6.2, ran the submitted inventory tests, and followed the REQ-02 test procedure independently. The PR is still open. These checklist results describe the current PR state.
+I reviewed the pull request against checklist 6.2, ran its inventory tests, and followed the REQ-02 procedure independently. At the time of my review, the PR was open. GitHub now shows it as closed, with no formal review submitted. This report records the revision I checked; the findings below were not posted as PR comments.
 
 ## Checklist 6.2
 
@@ -14,7 +14,7 @@ I checked the files in the pull request against checklist 6.2, ran the submitted
 | K2 | Tests cover functional, performance, security, and regression/reliability behavior. | OK | All four types are represented. See review comment 1 for an uncovered valid-SKU edge case. |
 | K3 | REQ-02 and REQ-04 check that the original object stays unchanged. | OK | The tests check the returned object and the original stock for both operations. |
 | K4 | REQ-03 covers quantities 0, 1, negative, and non-integer. | OK | The tests cover these boundaries; they also cover `NaN` and a string. |
-| K5 | The performance test measures and compares elapsed time; duplicate detection is optimized. | OK | REQ-06 checks the 20,000-item case against the 100 ms limit. The implementation uses `Set`; the submitted run reports 4 ms. |
+| K5 | The performance test measures and compares elapsed time; duplicate detection is optimized. | OK | REQ-06 checks the 20 000-item case against the 100 ms limit. The implementation uses `Set`; the submitted run reports 4 ms. |
 | K6 | At least four malicious SKU values are tested and rejected. | OK | The suite tests more than four invalid values, including HTML-like and SQL-like strings, and expects errors. |
 | K7 | `npm run coverage` shows no uncovered line numbers. | OK | The submitted coverage report shows 100% statements, branches, functions, and lines, with the uncovered-lines column empty. |
 | P1 | The plan states scope, exclusions, and reasons. | OK | `docs/test-plan.md` covers REQ-01–REQ-08 and explains that database, concurrent requests, and HTTP API are excluded because they are outside the supplied module. The implementation commit reference needs correction; see comment 2. |
@@ -27,7 +27,7 @@ I checked the files in the pull request against checklist 6.2, ran the submitted
 | J2 | Any uncovered requirement is explained as a risk or scope exclusion. | OK | The matrix records tests for all eight requirements; no requirement is marked uncovered. The report's D-02 classification should be clarified; see comment 5. |
 | G1 | The PR description explains how to run tests and reports test counts, coverage, and timing. | PUUDUB | GitHub currently shows “No description provided.” Add the run command and measured results; see comment 4. |
 
-## Review comments to post
+## Review findings
 
 1. **K2 — Käsitlege kehtivat SKU-d `constructor`.** **Asukoht:** `inventory.test.js`, rida 19 (või esimese REQ-01 testi ploki rida 7). `constructor` vastab lubatud SKU mustrile, kuid objekti päritud omadust käsitletakse laoseisuna. Kontrollisin: `restock({}, [{ sku: 'constructor', qty: 1 }])` ei tagasta kogust `1` ning `pick({}, 'constructor', 1)` ei anna teadet tundmatu SKU kohta. Kontrollige ainult objekti enda omadusi (või kasutage prototüübita laoseisuobjekti) ja lisage REQ-01/REQ-04 testid.
 
@@ -45,14 +45,14 @@ I checked the files in the pull request against checklist 6.2, ran the submitted
 
 ## Test execution
 
-The submitted test run reports 27/27 passing tests. Coverage is reported as 100% for statements, branches, functions, and lines, with no uncovered lines; REQ-06 is reported at 4 ms. I independently followed the REQ-02 case against the submitted module and confirmed its expected result. The `constructor` edge case described above is not covered and fails the functional expectation.
+At the revision I reviewed, all 27 submitted tests passed. Coverage was 100% for statements, branches, functions, and lines, with no uncovered lines; REQ-06 took 4 ms in that run. I also followed the REQ-02 procedure myself and confirmed its expected result. The `constructor` edge case described above was not covered and did not meet the functional expectation.
 
 ## Summary
 
-The submission includes the requested test suite and planning, case, traceability, and report documents. The checklist is mostly satisfied. Please address the seven comments above before treating the review and documentation as complete.
+The submission included the test suite and planning, case, traceability, and report documents. The seven findings above describe changes needed in the reviewed revision. The PR closed before they were posted as GitHub review comments.
 
 ## What went well
 
-1. The `Set` implementation brings duplicate detection within the 100 ms requirement; the report records 3.8 ms.
+1. The `Set` implementation brings duplicate detection within the 100 ms requirement; the report records 4 ms.
 2. The tests cover the required quantity boundaries, unsafe SKU values, object immutability, and error paths.
 3. The test cases and traceability matrix link REQ-01 through REQ-08 to the corresponding tests.

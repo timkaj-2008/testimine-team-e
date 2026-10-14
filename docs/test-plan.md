@@ -41,16 +41,16 @@ We applied each mutation to `inventory.js` separately, ran the relevant Jest tes
 | M1: change the restock check from `qty <= 0` to `qty < 0` | `REQ-03 restock rejects invalid quantity 0` | The test failed because quantity 0 no longer threw. Caught. |
 | M2: update the original object in `pick` and return it | `REQ-04 pick reduces quantity and returns a new object` | The test failed because `pick` returned the original object. Caught. |
 | M3: raise the SKU length limit from 20 to 25 | `REQ-07 restock rejects unsafe sku (AAAAAAAAAAAAAAAAAAAAA: sku too long)` | The test failed because a 21-character SKU was accepted. Caught. |
-| M4: make no code change | Full inventory suite | All 27 tests passed. No mutation was made; this is the control case. |
+| M4: make no code change | Baseline inventory suite (27 tests) | All tests passed. No mutation was made; this is the control case. |
 | M5: replace the accumulated restock quantity with `d.qty` | `REQ-01 restock adds deliveries to existing sku and adds an unknown sku` | The test failed because the existing quantity was not added to. Caught. |
 | M6: return immediately from `assertSku` | `REQ-07 restock rejects unsafe sku (%s: %s)` | All eight invalid-SKU cases failed as expected. Caught. |
 
 ## Test environment
 
-Run the inventory tests from the repository root with `npx jest inventory`. To check coverage, use `npx jest inventory --coverage`. The recorded environment for the review-fix run is Node.js v24.19.0 and Jest 29.7.0.
+Run the inventory tests from the repository root with `npx jest inventory`. To check coverage, use `npx jest inventory --coverage`. We recorded the review run in Node.js v24.19.0 with Jest 29.7.0.
 
 
 
 ## People and review
 
-Team E prepares the tests and documents for this pull request. The PR review was submitted by `ttvXdlex` on 2026-10-08. Team E reviews its separately assigned partner's pull request.
+Team E prepared the tests and documents for this pull request. `ttvXdlex` reviewed it on 2026-10-08. Under the course pairing, Team E reviews Team A's pull request.

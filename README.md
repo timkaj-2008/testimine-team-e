@@ -8,7 +8,7 @@ Unit tests with **Jest**, end-to-end tests with **Playwright**.
 1. Click **Use this template → Create a new repository** (your own copy).
 2. In your repository click **Code → Codespaces → Create codespace on main**.
 3. Wait until the terminal shows that `npm install` and the browser download have finished (1–2 min).
-4. Run `npm test` — you should see green tests.
+4. Run `npm test` to run all Jest exercises. Some exercise suites may fail until you fix their intentional practice bugs. To check the warehouse inventory module on its own, run `npx jest inventory`.
 
 Do **not** run `npm install -g npm@...` even if npm suggests it — it breaks the Codespace.
 
@@ -42,7 +42,7 @@ Test files must end with `.test.js` (e.g. `cart.test.js`), otherwise Jest will n
 - `demo.test.js`, `mock.test.js` — lecture demos, safe to delete
 - `password.js` / `password.test.js` — unit-test practice 1 (contains one intentional bug)
 - `cart.js` / `cart.test.js` — unit-test practice 2 (contains one intentional bug)
-- `tests/todo.spec.ts` — your Playwright tests go here
+- `todo.spec.ts` — the starter Playwright test file in the repository root
 - `playwright.config.ts` — Playwright settings (Chromium only, trace always on)
 
 ## Rules that save time
