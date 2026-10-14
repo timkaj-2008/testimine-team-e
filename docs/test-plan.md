@@ -2,9 +2,9 @@
 
 ## What we are testing
 
-This plan covers `inventory.js` and its Jest tests, `inventory.test.js`. In this repository both files are in the root directory, although the assignment guide shows them under `loeng-1.5-1.6/`.
+This plan covers `inventory.js` and its Jest tests, `inventory.test.js`. In this repository both files are in the root directory, although the assignment guide shows them under `loeng-1.5-1.6/`. The implementation under test is [`inventory.js` at commit `498c5d267b03a171d3ff535e03f671e87c06f186`](https://github.com/timkaj-2008/testimine-team-e/commit/498c5d267b03a171d3ff535e03f671e87c06f186); the submitted test additions are in [`inventory.test.js` at commit `3bd9094c41a2e7f5bf536e7981f8714a5204e348`](https://github.com/timkaj-2008/testimine-team-e/commit/3bd9094c41a2e7f5bf536e7981f8714a5204e348).
 
-We will check all eight requirements, REQ-01 through REQ-08. That includes restocking and picking stock, duplicate SKU detection, input validation, and the requirement to process 20,000 items in under 100 ms.
+We will check all eight requirements, REQ-01 through REQ-08. That includes restocking and picking stock, duplicate SKU detection, input validation, and the requirement to process 20 000 items in under 100 ms.
 
 We are not testing a database, concurrent requests, or an HTTP API. Those features are not part of the supplied module.
 
@@ -12,10 +12,11 @@ We are not testing a database, concurrent requests, or an HTTP API. Those featur
 
 | Risk | Likelihood | Impact | How we check it |
 |---|---|---|---|
-| Duplicate detection becomes too slow as the list grows | High | High | REQ-06 measures a list of 20,000 items. The implementation uses `Set`. |
+| Duplicate detection becomes too slow as the list grows | High | High | REQ-06 measures a list of 20 000 items. The implementation uses `Set`. |
 | A stock operation changes the object passed in by the caller | Medium | High | REQ-02 checks the restock result and original object; REQ-08 checks that a failed operation leaves stock alone. |
 | Invalid quantities are accepted at the boundary | Medium | High | REQ-03 checks zero, one, negative, fractional, `NaN`, and string values. |
 | An unsafe SKU gets through validation | Medium | High | REQ-07 checks malformed, overlength, and injection-like values, as well as valid boundary values. |
+| `pick` accepts an unsafe SKU even though `restock` rejects it | Medium | High | REQ-07 checks malformed, overlength, and injection-like values through both operations. |
 | A change to `pick` breaks an error case | Medium | Medium | REQ-04 checks a successful pick, an unknown SKU, insufficient stock, and invalid quantities. |
 
 ## How we test
@@ -27,7 +28,7 @@ These are unit tests written from the requirements. We also used small code muta
 - Every requirement from REQ-01 through REQ-08 has a test.
 - All inventory tests pass.
 - Branch coverage is at least 90%, with no uncovered executable lines.
-- REQ-06 finishes in under 100 ms for 20,000 items.
+- REQ-06 finishes in under 100 ms for 20 000 items.
 - M1, M2, M3, M5, and M6 are caught by tests. M4 makes no code change, so it is recorded as a no-change control.
 - No high-severity review comments are left open before merge.
 
@@ -40,14 +41,16 @@ We applied each mutation to `inventory.js` separately, ran the relevant Jest tes
 | M1: change the restock check from `qty <= 0` to `qty < 0` | `REQ-03 restock rejects invalid quantity 0` | The test failed because quantity 0 no longer threw. Caught. |
 | M2: update the original object in `pick` and return it | `REQ-04 pick reduces quantity and returns a new object` | The test failed because `pick` returned the original object. Caught. |
 | M3: raise the SKU length limit from 20 to 25 | `REQ-07 restock rejects unsafe sku (AAAAAAAAAAAAAAAAAAAAA: sku too long)` | The test failed because a 21-character SKU was accepted. Caught. |
-| M4: make no code change | Full inventory suite | All 27 tests passed. No mutation was made; this is the control case. |
+| M4: make no code change | Baseline inventory suite (27 tests) | All tests passed. No mutation was made; this is the control case. |
 | M5: replace the accumulated restock quantity with `d.qty` | `REQ-01 restock adds deliveries to existing sku and adds an unknown sku` | The test failed because the existing quantity was not added to. Caught. |
 | M6: return immediately from `assertSku` | `REQ-07 restock rejects unsafe sku (%s: %s)` | All eight invalid-SKU cases failed as expected. Caught. |
 
 ## Test environment
 
-Run the inventory tests from the repository root with `npx jest inventory`. To check coverage, use `npx jest inventory --coverage`. The reported run passed all 27 tests and showed 100% statement, branch, function, and line coverage. REQ-06 took 4 ms in that run. The exact Node.js version was not recorded.
+Run the inventory tests from the repository root with `npx jest inventory`. To check coverage, use `npx jest inventory --coverage`. We recorded the review run in Node.js v24.19.0 with Jest 29.7.0.
+
+
 
 ## People and review
 
-Team A prepares the tests and documents. Team E reviews Team A's pull request. Team A reviews Team B's pull request.
+Team E prepared the tests and documents for this pull request. `ttvXdlex` reviewed it on 2026-10-08. Under the course pairing, Team E reviews Team A's pull request.
