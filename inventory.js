@@ -19,7 +19,7 @@
 //  - sku must be a string of 1–20 characters: letters, digits, dash only.
 //    Anything else → throws an Error (prevents injection into downstream systems).
 
-const SKU_PATTERN = /^[A-Za-z0-9-]{1,20}(?![\s\S])/;
+const SKU_PATTERN = /^[A-Za-z0-9-]{1,20}$/;
 
 function assertSku(sku) {
   if (typeof sku !== 'string' || !SKU_PATTERN.test(sku)) {
@@ -65,6 +65,5 @@ function findDuplicateSkus(items) {
 }
 
 module.exports = { restock, pick, findDuplicateSkus };
-
 
 

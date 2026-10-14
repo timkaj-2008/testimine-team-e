@@ -129,4 +129,3 @@ test('REQ-08 failed pick leaves original stock unchanged', () => {
   expect(() => pick(stock, 'A-1', 6)).toThrow('not enough stock');
   expect(stock).toEqual({ 'A-1': 5 });
 });
-
