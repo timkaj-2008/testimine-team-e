@@ -2,33 +2,33 @@
 
 ## Results
 
-We ran `npx jest inventory --coverage`. All 27 tests passed. Jest reported 100% statement, branch, function, and line coverage for `inventory.js`, with no uncovered lines. The REQ-06 run processed 20,000 items in 4 ms, below the 100 ms limit.
+Command: `npx jest inventory --coverage --runInBand --verbose`
 
-In one full `npm test` run, the inventory suite passed, but `password.test.js` failed on the exact-eight-characters case. That is a separate exercise, and `password.js` labels its bug as intentional. The inventory suite passes on its own.
+Environment: Node.js v24.19.0, Jest 29.7.0
+Result: 37/37 tests passed. Statement, branch, function, and line coverage are all 100%; there are no uncovered lines. The REQ-06 Jest case processed 20 000 items in 5 ms, below the 100 ms limit.
 
-## Changes made
+For a before/after comparison, I ran the original nested-loop implementation from `main` and the current `Set` implementation against the same 20 000-item fixture (`SKU-${i % 19000}`) in this environment. The original implementation took 674.4 ms; the `Set` implementation took 2.71 ms. These are single-run measurements and can vary by machine.
 
-| ID | Finding | Status |
-|---|---|---|
-| D-01 | `findDuplicateSkus` compared items pair by pair and did not scale to large lists. | Replaced with a `Set`-based implementation. The reported 20,000-item run took 4 ms. |
-| D-02 | The SKU regular expression could accept a valid-looking value followed by a final newline. | Tightened the check and added a regression case; the invalid SKU is rejected. |
+## Defects and changes
 
-## Mutation checks
+| ID | Finding | Severity | Found by | Resolution |
+|---|---|---|---|---|
+| D-01 | `findDuplicateSkus` used nested loops and exceeded the 100 ms limit on 20 000 items. | High | REQ-06 performance test | Replaced with a `Set`-based O(n) implementation. Time changed from 674.4 ms to 2.71 ms in the measured run. |
+| D-02 | The SKU regular expression accepted a final newline because `$` can match before a trailing line terminator. | High | REQ-07 security test | Tightened the end-of-input check and added a trailing-newline regression case. |
+| D-03 | REQ-07 security tests exercised `restock` but not `pick`. | Medium | Peer review comment K6 | Added matching unsafe-SKU cases for `pick`; all are rejected with `invalid sku`. |
 
-We applied the mutations one at a time and restored `inventory.js` after each run. M1, M2, M3, M5, and M6 were caught by their related tests. M4 made no code change; all 27 inventory tests passed in that control run. The individual test names and outcomes are listed in `docs/test-plan.md`.
+## Review fixes
 
-## Review
+- Added a type comment immediately before every Jest test.
+- Changed the REQ-04 invalid-quantity loop to `test.each`, so each boundary is reported separately.
+- Matched the REQ-06 test name to the requirement's `20 000` formatting.
+- Added exact error-message assertions for failed restock and pick operations; updated TC-03, TC-04, and TC-08 expected results accordingly.
+- Added the reviewed source and test commit links and recorded exact runtime versions in the test plan.
 
-Peer review has not happened yet. Fill in the number of comments received, resolved, and disputed after Team E reviews this pull request. Record the main review finding here as well.
+## Review status
 
-## Remaining checks
-
-- Complete the peer review and resolve or answer each comment.
-- Review Team B's pull request and record the findings in `docs/review-of-team-b.md`.
-- The 4 ms performance result is from one run and may vary by machine; the requirement remains under 100 ms.
+The code and documentation findings from the review have been addressed in this branch. The PR description still needs to be entered on GitHub with the command, test count, coverage, and timing above. Confirm that all review threads are resolved after pushing the fixes.
 
 ## Recommendation
 
-The inventory tests pass and the reported performance and coverage meet the plan's targets. Finish the peer review before merging.
-
-
+The inventory suite passes with full coverage, and REQ-06 is below its 100 ms limit. Once the fixes are pushed and the PR description and review threads are updated, the PR is ready for final review.
